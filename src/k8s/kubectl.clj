@@ -33,6 +33,4 @@
       (nil? status) response
       (and (<= status 299)
            (>= status 200)) (-> response :body)
-      :else (do
-              (println response)
-              (throw (Exception. (-> response :body :message)))))))
+      :else (throw (Exception. (-> response :body :message))))))

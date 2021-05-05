@@ -1,7 +1,6 @@
 (ns k8s.core
   (:require [org.httpkit.client :as http]
             [clojure.string :as s]
-            [clojure.walk :as walk]
             [jsonista.core :as json]
             [inflections.core :as inflections]
             [stencil.core :as stencil]))
