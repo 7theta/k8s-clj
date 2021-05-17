@@ -26,7 +26,7 @@
     (catch Exception e (replace! request))))
 
 (defn- k8s-rest
-  [f uri {:keys [kind metadata] :as request}]
+  [f uri request]
   (let [response (f uri request)
         status (-> response :status)]
     (cond
