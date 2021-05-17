@@ -51,12 +51,14 @@
       (str url "{{name}}"))))
 
 (defn- camel-keys
+  "Recursively travel the map, and convert keyword keys to camel case string keys"
   [m] (inflections/transform-keys m (fn [k]
                                       (if (keyword? k)
                                         ((comp #(inflections/camel-case % :lower) name) k)
                                         k))))
 
 (defn- keybab-keys
+  "Recursively travel the map and convert string keys from camel case to keybab-case keywords"
   [m] (inflections/transform-keys m (fn [k]
                                       (if (string? k)
                                         ((comp keyword inflections/hyphenate) k)
