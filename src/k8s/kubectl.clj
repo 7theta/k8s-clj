@@ -23,7 +23,7 @@
   [uri request]
   (try
     (create! uri request)
-    (catch Exception e (replace! request))))
+    (catch Exception e (replace! uri request))))
 
 (defn- k8s-rest
   [f uri request]
