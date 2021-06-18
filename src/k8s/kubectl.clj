@@ -7,6 +7,10 @@
   [uri request]
   (k8s-rest k8s/post uri request))
 
+(defn patch!
+  [uri request]
+  (k8s-rest k8s/patch uri request))
+
 (defn replace!
   [uri request]
   (k8s-rest k8s/put uri request))
@@ -19,11 +23,18 @@
   [uri request]
   (k8s-rest k8s/get uri request))
 
-(defn apply!
+(defn safe-get
   [uri request]
   (try
-    (create! uri request)
-    (catch Exception e (replace! uri request))))
+    (k8s-rest k8s/get uri request)
+    (catch Exception e nil)))
+
+(defn apply!
+  [uri request]
+  (println (str "apply! " (:kind request) "/" (:name (:metadata request))))
+  (if (safe-get uri request)
+    (patch! uri request)
+    (create! uri request)))
 
 (defn- k8s-rest
   [f uri request]

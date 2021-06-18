@@ -18,27 +18,32 @@
 
 (defn post
   [uri request]
-  (call http/post uri request))
+  (call http/post nil uri request))
+
+(defn patch
+  [uri request]
+  (call http/patch {"content-type" "application/strategic-merge-patch+json"} uri request))
 
 (defn put
   [uri request]
-  (call http/put uri request))
+  (call http/put nil uri request))
 
 (defn delete
   [uri request]
-  (call http/delete uri request))
+  (call http/delete nil uri request))
 
 (defn get
   [uri request]
-  (call http/get uri request))
+  (call http/get nil uri request))
 
 (defn- call
-  [operation uri {:keys [kind metadata] :as request}]
+  [operation headers uri {:keys [kind metadata] :as request}]
   {:pre [(some? kind)
          (some? metadata)]}
   (let [url (str uri (stencil/render-string (api kind operation) metadata))
         body (camel-keys (dissoc request :kind))]
-    (let [response @(operation url {:headers {"content-type" "application/json"}
+    (let [response @(operation url {:headers (merge {"content-type" "application/json"}
+                                                    headers)
                                     :body (json/write-value-as-string body)})]
       (merge response
              {:body ((comp keybab-keys json/read-value) (:body response))}))))
