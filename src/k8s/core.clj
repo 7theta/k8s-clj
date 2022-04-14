@@ -1,5 +1,5 @@
 (ns k8s.core
-  (:require [org.httpkit.client :as http]
+  (:require [aleph.http :as http]
             [clojure.string :as s]
             [jsonista.core :as json]
             [inflections.core :as inflections]
